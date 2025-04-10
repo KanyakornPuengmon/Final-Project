@@ -21,6 +21,7 @@
   
   .login-card h2 {
     color: #0288d1;
+    font-size: 2rem;
     margin-bottom: 0.3rem;
   }
   
@@ -42,6 +43,7 @@
   .login-card .full {
     width: 100%;
     font-size: 1.2rem;
+    color: #101011;
   }
   
   .login-links {
