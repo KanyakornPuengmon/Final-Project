@@ -23,16 +23,22 @@ body {
   
   .card {
     background: white;
-    padding: 30px;
+    padding: 60px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: center;
-    max-width: 350px;
+    max-width: 300px;
+    
   }
   
   .icon {
-    width: 120px;
-    margin-bottom: 15px;
+    width: 200px;
+    margin-bottom: 2rem;
+  }
+  .icon2 {
+    width: 200px;
+    margin-left: 5rem;
+    margin-bottom: 2rem;
   }
   
   .btn {
@@ -76,6 +82,7 @@ body {
     display: inline-block;
     width: 60px;
     height: 34px;
+    margin-left: 15px;
   }
   
   .switch input {
