@@ -11,24 +11,120 @@
     <h2>Air Conditioner Control</h2>
     <img src="/image/air2.png" alt="air2" class="icon2" />
    
-
     <label class="switch">
       <input type="checkbox" id="powerToggle" />
       <span class="slider round"></span>
     </label>
     <div class="speed-buttons">
-      <button class="btn gray">Low</button>
-      <button class="btn gray">Medium</button>
-      <button class="btn gray">High</button>
+      <button class="btn gray" id="lowBtn" disabled>Low</button>
+      <button class="btn gray" id="mediumBtn" disabled>Medium</button>
+      <button class="btn gray" id="highBtn" disabled>High</button>
     </div>
     <div class="temp-control">
-      <button class="btn pink">-</button>
+      <button class="btn pink" id="decreaseTemp">-</button>
       <span class="temp-display">25°C</span>
-      <button class="btn pink">+</button>
+      <button class="btn pink" id="increaseTemp">+</button>
     </div>
     <p>Current Temp: --°C</p>
     <div class="status-box off">Compressor is off</div>
     <button class="btn home-btn" onclick="location.href='home.html'">Home</button>
   </div>
 </body>
+<script>
+  // Relay Mapping
+  const relayMap = {
+    low: { on: 'N1', off: 'F1' },
+    medium: { on: 'N2', off: 'F2' },
+    high: { on: 'N3', off: 'F3' },
+    compressor: { on: 'N4', off: 'F4' },
+  };
+
+  // ควบคุม compressor (Relay4) ด้วย toggle
+  document.getElementById('powerToggle').addEventListener('change', function () {
+    const cmd = this.checked ? relayMap.compressor.on : relayMap.compressor.off;
+    sendCmd(cmd);
+
+    // เปลี่ยนสถานะแสดงผล
+    const statusBox = document.querySelector('.status-box');
+    statusBox.textContent = this.checked ? 'Compressor is ON' : 'Compressor is OFF';
+    statusBox.classList.toggle('off', !this.checked);
+    statusBox.classList.toggle('on', this.checked);
+
+    // Enable/Disable fan speed buttons
+    const speedButtons = document.querySelectorAll('.speed-buttons .btn');
+    if (this.checked) {
+      document.getElementById('lowBtn').disabled = false;
+      enableLowSpeed(); // เปิด low เมื่อเปิด switch
+      document.getElementById('mediumBtn').disabled = false;
+      document.getElementById('highBtn').disabled = false;
+    } else {
+      disableAllSpeeds(); // ปิดทั้งหมดเมื่อปิด switch
+      speedButtons.forEach(btn => btn.disabled = true);
+    }
+  });
+
+  // ควบคุมความเร็วพัดลม (Relay1, 2, 3)
+  const speedButtons = document.querySelectorAll('.speed-buttons .btn');
+  speedButtons.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      const speeds = ['low', 'medium', 'high'];
+      const selected = speeds[index];
+
+      // เปิดตัวเลือกเดียวที่เลือก
+      sendCmd(relayMap[selected].on);
+
+      // ไฮไลต์ปุ่ม
+      speedButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // ปรับอุณหภูมิแสดงผลเฉยๆ (ไม่ได้ส่งคำสั่ง)
+  const tempDisplay = document.querySelector('.temp-display');
+  let currentTemp = 25;
+
+  document.getElementById('decreaseTemp').addEventListener('click', () => {
+    if (currentTemp > 0) {
+      currentTemp--;
+      updateTempDisplay();
+      sendCmd('SET_' + currentTemp);
+    }
+  });
+
+  document.getElementById('increaseTemp').addEventListener('click', () => {
+    if (currentTemp < 30) {
+      currentTemp++;
+      updateTempDisplay();
+      sendCmd('SET_' + currentTemp);
+    }
+  });
+
+  function updateTempDisplay() {
+    tempDisplay.textContent = currentTemp + '°C';
+  }
+
+  // ฟังก์ชันส่งคำสั่งไปที่ Backend (Node.js หรือ ESP32 API)
+  function sendCmd(cmd) {
+    fetch('/command/' + cmd)
+      .then(res => res.text())
+      .then(msg => console.log('Command:', msg))
+      .catch(err => console.error('Error:', err));
+  }
+
+  // เมื่อเปิด switch แล้วจะเปิด low
+  function enableLowSpeed() {
+    sendCmd(relayMap.low.on);
+    document.getElementById('lowBtn').classList.add('active');
+  }
+
+  // เมื่อปิด switch จะปิดทุกความเร็วพัดลม
+  function disableAllSpeeds() {
+    sendCmd(relayMap.low.off);
+    sendCmd(relayMap.medium.off);
+    sendCmd(relayMap.high.off);
+    const speedButtons = document.querySelectorAll('.speed-buttons .btn');
+    speedButtons.forEach(b => b.classList.remove('active'));
+  }
+</script>
+
 </html>
