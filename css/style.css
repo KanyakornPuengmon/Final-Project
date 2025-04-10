@@ -1,0 +1,139 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .home-bg {
+    background-image: url('../images/forest-bg.jpg');
+  }
+  
+  .air-bg {
+    background: linear-gradient(to right, #b3e0ff, #d3c4f3);
+  }
+  
+  .monitoring-bg {
+    background: linear-gradient(to bottom, #eaf4ff, #cce0ff);
+  }
+  
+  .card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 350px;
+  }
+  
+  .icon {
+    width: 120px;
+    margin-bottom: 15px;
+  }
+  
+  .btn {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .pink { background: #e91e63; }
+  .blue { background: #2196f3; }
+  .green { background: #4caf50; }
+  .red { background: #f44336; }
+  .gray { background: #e0e0e0; color: #333; }
+  
+  .home-btn {
+    background: #6200ea;
+    width: auto;
+    padding: 10px 20px;
+    margin-top: 20px;
+  }
+  
+  .status-box {
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 15px 0;
+  }
+  
+  .status-box.off { background: #f8bbd0; color: #880e4f; }
+  .status-box.warning { background: #fdd835; color: #6d4c41; }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  
+  input:checked + .slider {
+    background-color: #66bb6a;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  
+  .temp-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  
+  .temp-display {
+    font-size: 20px;
+    font-weight: bold;
+    min-width: 60px;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .monitor-box p {
+    margin: 8px 0;
+    font-size: 16px;
+  }
+  
